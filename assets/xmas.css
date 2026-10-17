@@ -1,0 +1,100 @@
+/* шрифт для попапов и на главной карте тоже */
+:root{--xf:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+/* «Рождественские ярмарки» — mobile-first */
+.xm{container-type:inline-size;--ink:#14213d;--muted:#5b6475;--bg:#fbf8f3;--card:#fff;--red:#c8102e;--gold:#d4a017;--green:#1d8f55;--line:#ece6dc;
+  font-family:var(--xf);color:var(--ink);background:transparent;padding:0 0 24px;}
+.xm *{box-sizing:border-box}
+.xm-hero{position:relative;overflow:hidden;padding:18px 16px 14px;color:#fff;border-radius:16px;
+  background:radial-gradient(120% 140% at 0% 0%,#3d7a5c 0%,#1f4a37 55%,#14301f 100%);}
+.xm-hero h2{color:#fff;margin:0 0 4px;font-size:24px;letter-spacing:.2px;font-weight:750}
+.xm-hero h2::after{content:"";display:block;width:56px;height:3px;margin-top:8px;border-radius:3px;background:linear-gradient(90deg,var(--gold),var(--red))}
+.xm-hero p{margin:0;font-size:14.5px;line-height:1.4;opacity:.88;max-width:640px}
+.xm-snow{position:absolute;inset:0;pointer-events:none;opacity:.55;
+  background-image:radial-gradient(2px 2px at 20% 30%,#fff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 70% 20%,#fff 50%,transparent 51%),
+  radial-gradient(2.5px 2.5px at 85% 65%,#fff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 40% 75%,#fff 50%,transparent 51%),
+  radial-gradient(2px 2px at 55% 45%,#ffe9a8 50%,transparent 51%),radial-gradient(1.5px 1.5px at 8% 80%,#fff 50%,transparent 51%);
+  background-size:180px 120px;}
+.xm-controls{position:sticky;top:var(--subtop,0px);z-index:800;background:rgba(247,241,232,.95);margin:0 -12px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  padding:10px 12px 8px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.xm-seg{display:flex;background:#efe9df;border-radius:12px;padding:3px;gap:2px}
+.xm-seg button{flex:1;border:0;background:transparent;padding:9px 4px;border-radius:9px;font:600 14px/1 var(--xf);color:var(--muted);cursor:pointer;min-height:38px}
+.xm-seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(20,33,61,.15)}
+.xm-chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+.xm-chips::-webkit-scrollbar{display:none}
+.xm-chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line);background:#fff;color:var(--muted);
+  border-radius:999px;padding:7px 12px;font:600 13px/1 var(--xf);cursor:pointer;min-height:36px}
+.xm-chip svg{color:var(--ty)}
+.xm-chip.on{border-color:var(--ty);color:var(--ink);background:color-mix(in srgb,var(--ty) 10%,#fff)}
+.xm-chip:not(.on){opacity:.55}
+.xm-layout{display:flex;flex-direction:column;gap:12px;padding:12px 0}
+.xm-map{position:relative;z-index:0;isolation:isolate;height:52vh;min-height:320px;max-height:560px;border-radius:16px;overflow:hidden;box-shadow:0 4px 18px rgba(20,33,61,.12);border:1px solid var(--line);background:#e9e4da}
+.xm-legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--muted);padding:8px 2px 0}
+.xm-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.xm-walk{margin-top:10px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px}
+.xm-walk-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;border-radius:10px;padding:11px;
+  background:linear-gradient(135deg,var(--red),#9d0c24);color:#fff;font:700 14.5px/1 var(--xf);cursor:pointer;min-height:44px}
+.xm-walk-btn[aria-pressed=true]{background:linear-gradient(135deg,#b8890f,var(--gold))}
+.xm-walk-info{display:none;font-size:13.5px;line-height:1.45;color:var(--ink);padding:10px 2px 0}
+.xm-walk.on .xm-walk-info{display:block}
+.xm-walk-info ol{margin:6px 0 0;padding-left:20px;color:var(--muted)}
+.xm-count{font-size:13px;color:var(--muted);margin:2px 2px 8px}
+.xm-list{display:grid;gap:10px}
+.xm-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 1px 2px rgba(20,33,61,.05);cursor:pointer;transition:box-shadow .15s,transform .15s;border-left:4px solid var(--green)}
+.xm-card:hover,.xm-card:focus{box-shadow:0 6px 18px rgba(20,33,61,.12);outline:none}
+.xm-c-check{border-left-color:#d99a06}.xm-c-closed{border-left-color:#c3c7ce;background:#fdfcfa}
+.xm-c-closed h3{color:#59606c}
+.xm-card header{display:flex;align-items:flex-start;gap:10px}
+.xm-card-ico{flex:0 0 30px;height:30px;border-radius:9px;display:grid;place-items:center;color:#fff}
+.xm-card-h{flex:1;min-width:0}
+.xm-card h3{margin:0;font-size:16px;line-height:1.25}
+.xm-card-type{font-size:12px;color:var(--muted)}
+.xm-badge{flex:0 0 auto;font:700 11.5px/1 var(--xf);padding:5px 8px;border-radius:999px;color:#fff;white-space:nowrap}
+.xm-badge.xm-open{background:#1d8f55}.xm-badge.xm-check{background:#d99a06}.xm-badge.xm-closed{background:#8b919c}
+.xm-what{margin:8px 0 6px;font-size:14px;line-height:1.45;color:#2a3550}
+.xm-facts{list-style:none;margin:0;padding:0;display:grid;gap:4px;font-size:13px;line-height:1.4}
+.xm-facts li{display:grid;grid-template-columns:72px 1fr;gap:6px}
+.xm-facts b{color:var(--muted);font-weight:600}
+.xm-tip{margin:8px 0 0;font-size:13.5px;line-height:1.4;padding:8px 10px;border-radius:10px;background:#fff7e3;color:#5b4a12}
+.xm-tip::before{content:"Совет: ";font-weight:700}
+.xm-note{margin:6px 0 0;font-size:12px;color:var(--muted)}
+.xm-flag{display:inline-block;font-size:.85em;font-weight:700;color:#8a5a00;background:#ffe9b0;border-radius:6px;padding:0 5px;margin:0 1px}
+.xm-btns{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.xm-btn{flex:1;display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:8px 12px;border-radius:10px;border:1.5px solid var(--ink);
+  color:var(--ink);background:#fff;text-decoration:none;font:700 13.5px/1 var(--xf);cursor:pointer}
+.xm-btn-main{background:var(--ink);color:#fff}
+.xm-btn-ghost{border-color:var(--line);color:var(--muted)}
+.xm-foot{font-size:12px;color:var(--muted);padding:0 2px}
+/* markers */
+.xm-pin-wrap{background:none;border:0}
+.xm-pin{position:relative;width:34px;height:34px;border-radius:50% 50% 50% 4px;transform:rotate(-45deg);background:var(--st);
+  box-shadow:0 2px 6px rgba(0,0,0,.35),inset 0 0 0 2.5px #fff;display:grid;place-items:center}
+.xm-pin svg{transform:rotate(45deg);color:#fff}
+.xm-pin::after{content:"";position:absolute;top:-3px;right:-3px;width:11px;height:11px;border-radius:50%;background:var(--ty);box-shadow:0 0 0 2px #fff}
+.xm-pin.xm-closed{opacity:.8}
+.xm-pin.xm-open{animation:xm-glow 2.4s ease-in-out infinite}
+@keyframes xm-glow{0%,100%{box-shadow:0 2px 6px rgba(0,0,0,.35),inset 0 0 0 2.5px #fff}50%{box-shadow:0 0 0 6px rgba(29,143,85,.18),0 2px 6px rgba(0,0,0,.35),inset 0 0 0 2.5px #fff}}
+@media (prefers-reduced-motion:reduce){.xm-pin.xm-open{animation:none}}
+.xm-step{width:22px;height:22px;border-radius:50%;background:var(--gold,#d4a017);color:#14213d;font:800 12px/22px system-ui,sans-serif;text-align:center;box-shadow:0 0 0 2px #fff,0 1px 4px rgba(0,0,0,.4)}
+.xm-step-wrap{background:none;border:0}
+/* popup */
+.xm-pop{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-width:210px}
+.xm-pop-type{display:flex;align-items:center;gap:4px;font:700 11.5px/1 var(--xf);text-transform:uppercase;letter-spacing:.4px}
+.xm-pop-name{font:750 15.5px/1.25 var(--xf);color:#14213d;margin:5px 0 6px}
+.xm-pop dl{margin:8px 0 0;display:grid;grid-template-columns:52px 1fr;gap:3px 6px;font-size:12.5px;line-height:1.35}
+.xm-pop dt{color:#5b6475;font-weight:600}.xm-pop dd{margin:0;color:#14213d}
+.xm-pop .xm-btn{min-height:36px;font-size:13px}
+.leaflet-popup-content-wrapper{border-radius:14px}
+/* desktop */
+@container (min-width:900px){
+  .xm-hero{padding:34px 32px 26px}.xm-hero h2{font-size:34px}
+  .xm-controls{flex-direction:row;align-items:center;justify-content:space-between;padding:12px 32px}
+  .xm-seg{flex:0 0 380px}
+  .xm-layout{flex-direction:row;align-items:flex-start;padding:16px 32px;gap:20px}
+  .xm-mapcol{flex:1 1 58%;position:sticky;top:calc(var(--subtop,0px) + 70px)}
+  .xm-map{height:calc(100vh - 230px);max-height:none;min-height:420px}
+  .xm-listcol{flex:1 1 42%;max-width:560px}
+  
+}
+@container (min-width:1400px){.xm-list{grid-template-columns:1fr 1fr}.xm-listcol{max-width:720px}.xm-facts li{grid-template-columns:62px 1fr}}
+.xm-map .leaflet-tile-pane{filter:saturate(.8) sepia(.06)}
+.leaflet-container a.xm-btn{color:#14213d}.leaflet-container a.xm-btn-main{color:#fff}
