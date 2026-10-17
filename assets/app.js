@@ -425,13 +425,18 @@
     return ["Web", "#777"];
   }
   function renderMore() {
-    let h = subnav([["s-places", "📍 " + t("places")], ["s-xmas", "🎄 " + t("xmas")], ["xm-go", "🎪 Ярмарки"], ["s-shop", "🎒 " + t("shop")], ["s-reels", "📱 " + t("reels")], ["s-kids", "👧 " + t("kids")], ["s-smoking", "🚬 " + t("smoking")], ["s-q", "❓ " + t("questions")]]);
+    let h = subnav([["s-places", "📍 " + t("places")], ["s-areas", "🏘 Районы"], ["s-xmas", "🎄 " + t("xmas")], ["xm-go", "🎪 Ярмарки"], ["s-shop", "🎒 " + t("shop")], ["s-reels", "📱 " + t("reels")], ["s-kids", "👧 " + t("kids")], ["s-smoking", "🚬 " + t("smoking")], ["s-q", "❓ " + t("questions")]]);
     h += `<div class="card" id="s-places"><h2>📍 ${t("places")}</h2>`;
     Object.keys(CATEGORIES).forEach((c) => {
       const ps = PLACES.filter((p) => p.cat === c); if (!ps.length) return;
       h += `<h3>${CATEGORIES[c].icon} ${CATEGORIES[c].label}</h3>` + ps.map((p) => `<div class="place" data-open="${p.id}"><span class="ic" style="background:${CATEGORIES[c].color}">${CATEGORIES[c].icon}</span><div><b>${esc(p.name)}</b><div class="small">${esc(p.addr || "")}${p.addr ? " · " : ""}${rich(p.note || "")}</div></div></div>`).join("");
     });
     h += `<p class="small">Координаты: OpenStreetMap Nominatim; для Yuen Kee, Swiss Butter и Burnt — центр почтового индекса (postcodes.io), точность ±50–100 м.</p></div>`;
+
+    if (typeof AREAS !== "undefined" && AREAS.length) h += `<div class="card" id="s-areas"><h2>🏘 Районы</h2>
+      <ul class="areas-list">${AREAS.map((a) => `<li><span class="sw" style="background:${a.color}"></span>${esc(a.label)}</li>`).join("")}</ul>
+      <p class="small">${esc(AREAS_NOTE)}. Контуры приблизительные.</p>
+      <div class="btns"><button class="btn primary" type="button" data-areas="on">🗺 Показать на карте</button></div></div>`;
 
     h += `<div class="card" id="s-xmas"><h2>🎄 Рождественский Лондон: что работает 17–21.11</h2>
       <table><tr><th>Что</th><th>С какого числа</th><th>17–21.11?</th></tr>${XMAS.map((r) => `<tr><td>${rich(r[0])}</td><td>${rich(r[1])}</td><td>${rich(r[2])}</td></tr>`).join("")}</table>
@@ -466,11 +471,60 @@
     pane.addEventListener("click", (e) => {
       const r = e.target.closest("[data-route]");
       if (r) showRoute(XMAS_ROUTE_PLACES);
+      if (e.target.closest("[data-areas]")) showAreas();
     });
   }
 
   /* ---------- MAP ---------- */
   let map = null, markers = [], routeLine = null, meMarker = null, needFit = false, fitted = false;
+  let areasLayer = null, areasLegend = null, areasOn = false;
+  const HAS_AREAS = typeof AREAS !== "undefined" && AREAS.length > 0;
+  /* Chaikin smoothing for closed polygons */
+  function smooth(pts, n) {
+    for (let k = 0; k < n; k++) {
+      const out = [];
+      pts.forEach((p, i) => { const q = pts[(i + 1) % pts.length];
+        out.push([0.75 * p[0] + 0.25 * q[0], 0.75 * p[1] + 0.25 * q[1]], [0.25 * p[0] + 0.75 * q[0], 0.25 * p[1] + 0.75 * q[1]]); });
+      pts = out;
+    }
+    return pts;
+  }
+  function areaPopup(a) {
+    return `<b style="color:${a.color === "#d4b000" ? "#8a7300" : a.color}">${esc(a.label)}</b><div class="small" style="color:var(--ink);margin-top:3px">Станции: ${esc(a.stations)}</div><div class="small" style="margin-top:4px"><i>${esc(AREAS_NOTE)}</i></div>`;
+  }
+  function buildAreas() {
+    areasLayer = L.layerGroup(AREAS.map((a) => L.polygon(smooth(a.pts, 3), { color: a.color, weight: 2, opacity: .8, fillColor: a.color, fillOpacity: .2, smoothFactor: 1.5 })
+      .bindPopup(areaPopup(a), { maxWidth: 280 })));
+    areasLegend = L.control({ position: "bottomright" });
+    areasLegend.onAdd = () => {
+      const d = L.DomUtil.create("div", "areas-legend");
+      d.innerHTML = AREAS.map((a) => `<div><span class="sw" style="background:${a.color}"></span>${esc(a.label)}</div>`).join("") + `<div class="src">${esc(AREAS_NOTE)}</div>`;
+      L.DomEvent.disableClickPropagation(d);
+      return d;
+    };
+  }
+  function setAreas(on, fit) {
+    areasOn = on;
+    document.querySelectorAll("[data-farea]").forEach((c) => c.setAttribute("aria-pressed", on));
+    if (!map || !HAS_AREAS) return;
+    if (!areasLayer) buildAreas();
+    if (on) { areasLayer.addTo(map); areasLegend.addTo(map); } else { areasLayer.remove(); areasLegend.remove(); }
+    if (on && fit) {
+      const b = L.latLngBounds([]); areasLayer.eachLayer((l) => b.extend(l.getBounds()));
+      setTimeout(() => {
+        map.invalidateSize();
+        const lg = areasLegend.getContainer(), lh = lg ? lg.offsetHeight + 90 : 40;
+        map.fitBounds(b, { paddingTopLeft: [16, isDesktop() ? 90 : 120], paddingBottomRight: [16, lh] });
+      }, 120);
+    }
+  }
+  function showAreas() {
+    if (!isDesktop()) go("map");
+    if (!map) initMap();
+    needFit = false;
+    setAreas(true, true);
+    const cf = $("#catFilter"); if (cf) cf.scrollLeft = cf.scrollWidth;
+  }
   const filt = { day: "all", cats: new Set(Object.keys(CATEGORIES)) };
   const isFar = (p) => p.far || Math.hypot((p.lat - 51.51) * 111, (p.lng + 0.12) * 69) > 15;
   function allPoints() {
@@ -498,14 +552,17 @@
       markers.push({ p, m: L.marker([x.lat, x.lng], { icon: XM.icon(x, XM.statusFor(x, "all")), title: x.name }).bindPopup(XM.popupHtml(x, "all"), { maxWidth: 280 }) });
     });
     $("#dayFilter").innerHTML = `<button class="chip" type="button" data-fday="all" aria-pressed="${filt.day === "all"}">${t("all")}</button>` + DAYS.map((d) => `<button class="chip" type="button" data-fday="${d.id}" aria-pressed="${filt.day === d.id}">${esc(d.short)}</button>`).join("");
-    $("#catFilter").innerHTML = Object.entries(CATEGORIES).map(([k, c]) => `<button class="chip cat" type="button" data-fcat="${k}" aria-pressed="true" style="color:${c.color}"><span class="dot" style="background:${c.color}"></span><span style="color:var(--ink)">${c.label}</span></button>`).join("");
+    $("#catFilter").innerHTML = Object.entries(CATEGORIES).map(([k, c]) => `<button class="chip cat" type="button" data-fcat="${k}" aria-pressed="true" style="color:${c.color}"><span class="dot" style="background:${c.color}"></span><span style="color:var(--ink)">${c.label}</span></button>`).join("") +
+      (HAS_AREAS ? `<button class="chip cat" type="button" data-farea="1" aria-pressed="${areasOn}" style="color:#1f6fd1"><span class="dot" style="background:linear-gradient(90deg,#1f6fd1 33%,#d4b000 33% 66%,#d0312d 66%)"></span><span style="color:var(--ink)">🏘 Районы</span></button>` : "");
     $("#mapbar").addEventListener("click", (e) => {
       const d = e.target.closest("[data-fday]"), c = e.target.closest("[data-fcat]");
       if (d) setDayFilter(d.dataset.fday);
+      if (e.target.closest("[data-farea]")) { setAreas(!areasOn); return; }
       if (c) { const k = c.dataset.fcat; filt.cats.has(k) ? filt.cats.delete(k) : filt.cats.add(k); c.setAttribute("aria-pressed", filt.cats.has(k)); applyFilters(true); }
     });
     $("#locate").addEventListener("click", locate);
     applyFilters(true);
+    if (areasOn) setAreas(true);
   }
   function setDayFilter(day, quiet) {
     filt.day = day;

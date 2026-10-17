@@ -1,6 +1,6 @@
 /* Service worker: app shell (cache-first, refreshed in background) + visited OSM tiles & hotel photos (runtime cache, capped). */
 /* После правки файлов поменяйте VERSION — тогда кэш оболочки обновится у всех сразу. */
-const VERSION = "ldn26-v4";
+const VERSION = "ldn26-v5";
 const SHELL = VERSION + "-shell";
 const TILES = "ldn26-tiles";
 const IMGS = "ldn26-img";

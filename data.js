@@ -160,7 +160,42 @@ const PLACES = [
   { id: "stpancras", cat: "tr", name: "St Pancras International", lat: 51.5327196, lng: -0.1270027,
     note: "Luton Airport Express / Thameslink", days: ["2026-11-17", "2026-11-20"] },
   { id: "luton", cat: "tr", name: "London Luton Airport", lat: 51.8781015, lng: -0.3664255,
-    note: "LTN · далеко на севере от центра — отдалите карту.", days: ["2026-11-17", "2026-11-20", "2026-11-21"], far: true }
+    note: "LTN · далеко на севере от центра — отдалите карту.", days: ["2026-11-17", "2026-11-20", "2026-11-21"], far: true },
+
+  /* Афтернун-ти: советы из израильской FB-группы о Лондоне (не проверены нами лично).
+     Адреса и цены — с официальных сайтов (17.10.2026); координаты — OpenStreetMap. */
+  { id: "candella", cat: "food", name: "Candella Tea Room — afternoon tea", lat: 51.5040565, lng: -0.1919758,
+    addr: "34 Kensington Church Street, London W8 4HA · м. High Street Kensington / Notting Hill Gate",
+    note: "💬 <b>Совет из FB-группы, не проверено.</b> Traditional Afternoon Tea — <b>£28.95 на человека</b> (официальное меню, 17.10.2026). Часы на сайте указаны по-разному (11:00–17:00 и 10:00–18/19:00) [[проверить]]; на выходных лучше бронировать.",
+    links: [{ t: "Меню (candellatearoom.com)", u: "https://www.candellatearoom.com/afternoon-tea-menu" }, { t: "Сайт", u: "https://www.candellatearoom.com/" }],
+    tip: true },
+  { id: "goring", cat: "food", name: "The Goring — afternoon tea", lat: 51.49754, lng: -0.14558,
+    addr: "15 Beeston Place, London SW1W 0JW · м. Victoria",
+    note: "💬 <b>Совет из FB-группы, не проверено.</b> Traditional Tea — <b>£85 на человека</b>, с бокалом Bollinger — от £90 (официальное меню, 17.10.2026); сервисный сбор сверху [[проверить]]. Veranda, ежедневно 12:00–18:15. Бронь заранее.",
+    links: [{ t: "thegoring.com", u: "https://www.thegoring.com/food-drink/afternoon-tea-in-the-veranda/" }, { t: "Меню (PDF)", u: "https://www.thegoring.com/media/1idddsq1/timeless-style-afternoon-tea-menu.pdf" }],
+    tip: true }
+];
+
+/* ---------- РАЙОНЫ (слой на карте, по умолчанию выключен) ----------
+   Приблизительно, по картинке из FB-группы «London & UK Tourist Advanced» —
+   не официальные данные. Контуры проведены по координатам станций (OSM),
+   сглаживаются в app.js. Точки: [lat, lng]. */
+const AREAS_NOTE = "По картинке из FB-группы «London & UK Tourist Advanced», не официальные данные";
+const AREAS = [
+  { id: "jewish", color: "#1f6fd1", label: "Районы с еврейской общиной",
+    stations: "Edgware, Burnt Oak, Mill Hill Broadway, Colindale, Hendon, Hendon Central, Brent Cross, Golders Green",
+    pts: [[51.624, -0.283], [51.627, -0.252], [51.618, -0.222], [51.596, -0.201], [51.578, -0.182], [51.565, -0.190],
+          [51.566, -0.212], [51.574, -0.236], [51.585, -0.258], [51.598, -0.282], [51.611, -0.292]] },
+  { id: "central", color: "#d4b000", label: "Хорошие районы в центре",
+    stations: "Baker Street, Great Portland Street, Euston, King's Cross St Pancras, Russell Square, Holborn, Covent Garden, Leicester Square, Tottenham Court Road, Oxford Circus, Bond Street, Green Park, Piccadilly Circus, Charing Cross, Embankment, Westminster, Waterloo, St James's Park, Victoria, Sloane Square, Knightsbridge, South Kensington, Gloucester Road, Earl's Court",
+    pts: [[51.5262, -0.1595], [51.5305, -0.1405], [51.5342, -0.1240], [51.5292, -0.1145], [51.5180, -0.1125], [51.5112, -0.1110],
+          [51.5065, -0.1055], [51.4990, -0.1080], [51.4985, -0.1205], [51.4935, -0.1330], [51.4918, -0.1425], [51.4895, -0.1560],
+          [51.4895, -0.1730], [51.4885, -0.1955], [51.4950, -0.1990], [51.4990, -0.1860], [51.5005, -0.1700], [51.5035, -0.1560],
+          [51.5100, -0.1555], [51.5148, -0.1600], [51.5205, -0.1625]] },
+  { id: "careful", color: "#d0312d", label: "Автор поста советует израильтянам быть осторожнее",
+    stations: "Paddington, Edgware Road, Bayswater, Royal Oak (рядом Warwick Avenue, Lancaster Gate, Queensway)",
+    pts: [[51.5250, -0.1915], [51.5258, -0.1760], [51.5225, -0.1655], [51.5168, -0.1640], [51.5118, -0.1710],
+          [51.5102, -0.1840], [51.5112, -0.1965], [51.5180, -0.1990]] }
 ];
 
 /* ---------- ПЛАН ПО ДНЯМ (черновик) ----------
