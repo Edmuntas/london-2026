@@ -70,7 +70,21 @@ const LUTON_OPTIONS = [
 
 const LUTON_SOURCES = "DART работает 24/7 (ночью — раз в ~15 мин). Источники: <a href=\"https://www.lutonairportexpress.co.uk/routes/london-to-luton-airport\" target=\"_blank\" rel=\"noopener\">Luton Airport Express</a> · <a href=\"https://www.lutonairportexpress.co.uk/faqs\" target=\"_blank\" rel=\"noopener\">LAE FAQ</a> · <a href=\"https://www.london-luton.co.uk/to-and-from-lla/trains/luton-dart\" target=\"_blank\" rel=\"noopener\">Luton DART</a> · <a href=\"https://www.thameslinkrailway.com/travel-information/airport-travel/luton-airport\" target=\"_blank\" rel=\"noopener\">Thameslink</a> · <a href=\"https://www.nationalexpress.com/en/airports/luton/london-to-luton\" target=\"_blank\" rel=\"noopener\">National Express</a> · <a href=\"https://www.london-luton.co.uk/to-and-from-lla/bus-and-coach/to-from-london\" target=\"_blank\" rel=\"noopener\">LLA: автобусы</a> · <a href=\"https://tfl.gov.uk/modes/taxis-and-minicabs/taxi-fares\" target=\"_blank\" rel=\"noopener\">TfL: такси</a> · <a href=\"https://www.nationalrail.co.uk/\" target=\"_blank\" rel=\"noopener\">National Rail (точное расписание)</a>";
 
-const LUTON_ARRIVAL = "После паспортного контроля — DART → Parkway → Luton Airport Express до St Pancras (по будням до ~23:50). Проблем нет.";
+const LUTON_ARRIVAL = "После паспортного контроля (~19:30) — DART → Parkway → <b>Luton Airport Express</b> до St Pancras (22 мин, каждые 30 мин, по будням до 23:54) → <b>Piccadilly line</b> до Gloucester Road / South Kensington (~20 мин) → пешком ~10 мин. Дома ~21:00–21:30.";
+const HOME_TRANSFERS = {
+  arrival: [
+    ["<b>Поезд + метро</b> (рекомендуем)", "~1 ч 45 мин от посадки до двери", "LAE до «Luton Airport» (DART вкл.) от £10/чел Advance, по контактлесс £12.30 + DART £4.90; метро зона 1 ~£2.90/чел → <b>~£30–45 на двоих</b>"],
+    ["<b>Такси / минивэн с фикс. ценой</b>", "~60–75 мин + выход из аэропорта", "Saloon £91 (Airport Only, Kensington) – £92 (Blackberry Cars) за машину; такси у терминала по счётчику дороже"],
+    ["<b>National Express A1</b> до Victoria + District/Circle или такси", "~75–90 мин + ~15 мин", "Автобус от ~£9.50–13/чел + метро ~£2.90/чел или такси ~£15 → <b>~£30–45 на двоих</b>"]
+  ],
+  departure: [
+    ["<b>Такси от дома в 03:45</b> ✅", "~50–60 мин → терминал ~04:45", "Фикс £83 (Blackberry Cars, SK→Luton) – £91; на двоих одна машина; заказать заранее"],
+    ["Night Tube Piccadilly (Пт→Сб) до King's Cross St Pancras + <b>Thameslink 03:44</b> → Parkway 04:29 + DART", "выход ~03:00 → терминал ~04:40", "Метро ~£2.90/чел + Thameslink ~£12–17/чел + DART → ~£40 на двоих; ночное расписание [[проверить]]"],
+    ["<b>National Express A1</b> Victoria 03:30 → Luton 04:50 (сб)", "выход ~03:00 + такси до Victoria ~10 мин", "Автобус от ~£9.50/чел + такси до Victoria ~£15 → поздновато, но успевает"],
+    ["<b>Green Line 757</b> Victoria (24/7, ночью ~раз в час)", "~70–90 мин", "£15/чел; точное ночное время в субботу [[проверить]]"]
+  ],
+  sources: "<a href=\"https://www.lutonairportexpress.co.uk/routes/london-to-luton-airport\" target=\"_blank\" rel=\"noopener\">LAE</a> · <a href=\"https://www.guide-to-london.net/airports/luton-to-central-london\" target=\"_blank\" rel=\"noopener\">Guide-to-London (тарифы)</a> · <a href=\"https://airportonly.co.uk/airport-taxis/luton-airport/prices\" target=\"_blank\" rel=\"noopener\">Airport Only</a> · <a href=\"https://www.blackberrycars.com/taxisouthkensingtonluton/\" target=\"_blank\" rel=\"noopener\">Blackberry Cars</a> · <a href=\"https://timetables.nationalexpress.com/routes/NX/A1/London-Luton_Airport/O\" target=\"_blank\" rel=\"noopener\">NX A1</a> · <a href=\"https://www.arrivabus.co.uk/airport-services/greenline/FAQs\" target=\"_blank\" rel=\"noopener\">Green Line 757</a> · <a href=\"https://www.london.gov.uk/transport/rail-and-underground/night-tube\" target=\"_blank\" rel=\"noopener\">Night Tube</a>"
+};
 
 const LUTON_DEPARTURE = {
   warn: "❌ <b>Первый Luton Airport Express в субботу — 05:33</b> из St Pancras → Parkway ~05:55 → терминал ~06:00–06:05. Сдача багажа Эммы закрывается в <b>06:25</b>. Это <b>почти без запаса</b> (очереди на досмотре рано утром), а нам нужно быть в аэропорту в <b>05:25–05:45</b>. → <b>Первый экспресс не подходит.</b>",
@@ -79,7 +93,7 @@ const LUTON_DEPARTURE = {
     "<b>National Express</b> из Victoria / Marble Arch / Baker St ночью (рейсы каждые ~30–60 мин) — прямо к терминалу; конкретный рейс выбрать в планировщике.",
     "<b>Предзаказанное такси</b> ~04:00 из центра — самый простой, но самый дорогой вариант."
   ],
-  good: "✅ <b>Рекомендация:</b> последнюю ночь <b>Пт 20.11 провести в отеле у аэропорта Luton</b> (в пешей доступности от терминала). В пятницу вечером спокойно доехать экспрессом (ходит до ~23:50), утром выйти в ~05:15 пешком. Запасной вариант — отель у <b>St Pancras / King's Cross</b> и ночной Thameslink ~04:44 [[проверить]]."
+  good: "✅ <b>Рекомендация (живём в South Kensington все 4 ночи):</b> <b>предзаказанное такси в 03:45</b> от дома (32 Roland Gardens) до терминала — фикс ~£83–95 за машину (на двоих), ~50–60 мин ночью → в аэропорту ~04:45, сразу к открытию сдачи багажа 04:25–06:25. Запасной: Night Tube Piccadilly (Пт→Сб ночь) South Kensington → King's Cross St Pancras и ночной Thameslink 03:44 → Parkway 04:29 + DART [[проверить расписание на 21.11]]."
 };
 
 /* ---------- ДОКУМЕНТЫ ---------- */
@@ -99,6 +113,11 @@ const CATEGORIES = {
    Координаты: OpenStreetMap Nominatim; для Yuen Kee, Swiss Butter и Burnt —
    центр почтового индекса (postcodes.io), точность ±50–100 м. */
 const PLACES = [
+  { id: "home", cat: "stay", name: "🏠 Наш дом", lat: 51.4895391, lng: -0.1799673,
+    addr: "32 Roland Gardens, London SW7 3PL · South Kensington",
+    note: "Апартаменты «Stunning South Kensington Flat» (1 спальня). Заезд с 15:00, выезд до 11:00. Пешком: Gloucester Road ~9 мин, South Kensington ~10 мин.",
+    links: [{ t: "Booking", u: "https://www.booking.com/hotel/gb/stunning-south-kensington-flat-greater-london1.html" }],
+    days: ["2026-11-17", "2026-11-18", "2026-11-19", "2026-11-20", "2026-11-21"] },
   { id: "yuenkee", cat: "food", name: "Yuen Kee Dumpling 袁记云饺", lat: 51.518164, lng: -0.078769,
     addr: "122 Middlesex St, London E1 7HY · у Liverpool Street",
     note: "Адрес подтверждён в реестре гигиены FSA (рейтинг 5, проверка 17.07.2026). Часы 11–22 — по агрегаторам [[проверить]].",
@@ -201,11 +220,12 @@ const AREAS = [
 /* ---------- ПЛАН ПО ДНЯМ (черновик) ----------
    items: time (необязательно), tz ("IL" | "UK", по умолчанию UK), text, places: [id…] */
 const DAYS = [
-  { id: "2026-11-17", short: "Вт 17", title: "Прилёт", area: "TLV → Luton → St Pancras", items: [
+  { id: "2026-11-17", short: "Вт 17", title: "Прилёт", area: "TLV → Luton → St Pancras → 🏠 South Kensington", items: [
     { time: "~12:20", tz: "IL", text: "В Бен-Гурион к ~12:20; сдача багажа Эммы до 14:10." },
     { time: "15:20", tz: "IL", text: "Вылет W9 5302 TLV → LTN.", flight: 0 },
-    { time: "18:45", text: "Посадка в Luton → DART → экспресс → St Pancras ~20:00–20:30.", places: ["luton", "stpancras"] },
-    { text: "Заселение, ужин рядом с отелем, лёгкая прогулка." }
+    { time: "18:45", text: "Посадка в Luton → DART → Luton Airport Express → St Pancras ~20:00–20:30.", places: ["luton", "stpancras"] },
+    { time: "~20:30", text: "Piccadilly line St Pancras → <b>Gloucester Road</b> или <b>South Kensington</b> (~20 мин) → пешком ~10 мин до дома. Дома ~21:00–21:30. (Запасной: такси из Luton ~£90 фикс.)", places: ["stpancras", "home"] },
+    { text: "Заселение в <b>Наш дом</b> (32 Roland Gardens), ужин рядом.", places: ["home"] }
   ]},
   { id: "2026-11-18", short: "Ср 18", title: "Восток и Сити", area: "Liverpool St · Spitalfields · Mile End · Leyton", items: [
     { label: "Обед", text: "<b>Yuen Kee Dumplings</b> (Middlesex St, у Liverpool St).", places: ["yuenkee"] },
@@ -225,10 +245,11 @@ const DAYS = [
     { text: "Covent Garden (ёлка и украшения с 12.11) → рынок на Leicester Square → Trafalgar Square (ёлку зажгут только в декабре).", places: ["covent", "leicester", "trafalgar"] },
     { text: "Витрины <b>Fortnum &amp; Mason</b> на Piccadilly.", places: ["fortnum"] },
     { label: "Вечер", text: "<b>Southbank Winter Market</b> у Темзы.", places: ["southbank"] },
-    { time: "~21:00–22:00", text: "Забрать вещи → поезд в Luton → отель у аэропорта.", places: ["stpancras", "luton"] }
+    { time: "вечер", text: "Вернуться домой, собрать вещи, заказать такси на 03:45 (если ещё не заказано).", places: ["home"] }
   ]},
-  { id: "2026-11-21", short: "Сб 21", title: "Вылет", area: "Luton → TLV", items: [
-    { time: "~04:45", text: "Подъём; ~05:15 выход, в терминале 05:25–05:45." },
+  { id: "2026-11-21", short: "Сб 21", title: "Вылет", area: "🏠 SW7 → такси → Luton → TLV", items: [
+    { time: "~03:15", text: "Подъём." },
+    { time: "03:45", text: "<b>Такси из дома</b> (предзаказ, фикс ~£83–95) → Luton ~50–60 мин ночью. В терминале ~04:40–04:50.", places: ["home", "luton"] },
     { time: "до 06:25", text: "Сдача багажа (окно Wizz в Luton: 04:25–06:25).", places: ["luton"] },
     { time: "07:25", text: "Вылет W9 5301 → 14:25 Тель-Авив.", flight: 1 }
   ]}
@@ -258,11 +279,30 @@ const DAYS = [
      lastNight: false                 // true = вариант на ночь 20→21 (у Luton)
    }
 */
-const HOTELS = [];
+const HOTELS = [
+  { chosen: true,
+    name: "Stunning South Kensington Flat — 32 Roland Gardens",
+    area: "South Kensington (SW7 3PL)",
+    tier: "наш дом",
+    rating: 8.6, reviews: 21,
+    nights: 4,
+    room: "Апартаменты, 1 спальня (двуспальная кровать), кухня",
+    breakfast: "нет (своя кухня)",
+    cancellation: "неизвестно [[проверить в брони]]",
+    tube: "Gloucester Road ~9 мин · South Kensington ~10 мин пешком",
+    url: "https://www.booking.com/hotel/gb/stunning-south-kensington-flat-greater-london1.html",
+    photo: "assets/img/home-roland32.jpg",
+    lat: 51.4895391, lng: -0.1799673,
+    smokingRule: "Курение запрещено на всей территории (smoke-free); можно ли на балконе — уточнить у хозяина",
+    balcony: true,
+    pros: ["Тихая улица в South Kensington, рядом музеи, Harrods, Brompton Cross", "Своя кухня, стиральная машина, Wi-Fi", "Две станции метро в 10 мин: Piccadilly, District, Circle", "Есть балкон (по описанию в листингах)"],
+    cons: ["До Luton далеко (~1 ч на машине) — ранний вылет 21.11 только на такси/ночном транспорте", "Заезд с 15:00, выезд до 11:00", "Отзывов мало (≈13–21), оценки 4.0/5 – 8.6/10 в разных агрегаторах"]
+  }
+];
 
 /* Рекомендации по жилью из черновика (показываются, пока HOTELS пуст и всегда как справка) */
 const STAY_ADVICE = {
-  slots: ["Ночи 17→18, 18→19, 19→20: ____________ (адрес / бронь / цена)", "Ночь 20→21: ____________"],
+  slots: ["Все 4 ночи 17→21: 32 Roland Gardens, South Kensington SW7 3PL (выбрала Эмма)"],
   areas: [
     "<b>King's Cross / St Pancras</b> — прямой поезд в Luton в обе стороны, Piccadilly/Victoria/Northern линии метро, удобно до West End и Сити.",
     "Альтернатива: <b>Holborn / Bloomsbury</b> — пешком до Swiss Butter, Covent Garden, Oxford St; 1–2 остановки до St Pancras."
@@ -514,7 +554,7 @@ const CHECKLISTS = [
     { id: "ci-back",text: "Онлайн-регистрация Wizz обратно: с 20.11 07:25 (время Лондона), до 3 ч до вылета" },
     { id: "bp",     text: "Посадочные Wizz — после онлайн-регистрации (за 24 ч)" },
     { id: "ww",     text: "Билеты на Winter Wonderland (Чт 19.11)" },
-    { id: "luton",  text: "Билет на поезд в Luton вечером 20.11 и бронь отеля у аэропорта" },
+    { id: "luton",  text: "Заказать такси на Сб 21.11 03:45 от 32 Roland Gardens до Luton (фикс. цена)" },
     { id: "drive",  text: "Папка в Google Drive для документов (ещё не создана)" }
   ]},
   { id: "pack", title: "🧳 Сборы", items: [

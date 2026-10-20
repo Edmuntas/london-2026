@@ -58,12 +58,15 @@
   };
   const isDesktop = () => window.matchMedia("(min-width:900px)").matches;
   const gmaps = (lat, lng) => `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=transit`;
+  const HOME = PLACES.find((p) => p.id === "home");
+  const fromHome = (p, mode) => `https://www.google.com/maps/dir/?api=1&origin=${HOME.lat},${HOME.lng}&destination=${p.lat},${p.lng}&travelmode=${mode}`;
   const cmapper = (lat, lng, name) => `https://citymapper.com/directions?endcoord=${lat},${lng}&endname=${encodeURIComponent(name)}`;
   function toast(msg) { const el = $("#toast"); el.textContent = msg; el.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(() => (el.hidden = true), 2600); }
   function navBtns(p, opts) {
     opts = opts || {};
     let h = `<div class="btns"><a class="btn primary" href="${gmaps(p.lat, p.lng)}" target="_blank" rel="noopener">🧭 ${t("route")}</a>`;
     h += `<a class="btn" href="${cmapper(p.lat, p.lng, p.name)}" target="_blank" rel="noopener">🚇 ${t("citymapper")}</a>`;
+    if (HOME && p.id !== "home" && typeof p.lat === "number") h += `<a class="btn" href="${fromHome(p, "walking")}" target="_blank" rel="noopener">🚶 От дома</a><a class="btn" href="${fromHome(p, "transit")}" target="_blank" rel="noopener">🏠🚇 Маршрут от дома</a>`;
     if (!opts.noMap) h += `<button class="btn" type="button" data-focus="${esc(p.id)}">📍 ${t("onMap")}</button>`;
     if (opts.more) h += `<button class="btn ghost" type="button" data-open="${esc(p.id)}">${t("details")}</button>`;
     return h + "</div>";
@@ -143,7 +146,7 @@
   let selectedDay = null;
   function renderPlan() {
     const todayId = ymd(new Date(), TZ.UK);
-    const stayTxt = HOTELS.length ? `${HOTELS.length} вариант(ов)` : "не забронировано (TBD)";
+    const ch = HOTELS.find((x) => x.chosen); const stayTxt = ch ? "🏠 32 Roland Gardens, SW7" : HOTELS.length ? `${HOTELS.length} вариант(ов)` : "не забронировано (TBD)";
     let h = `<div class="card hero">
       <div class="small" id="cdLabel"></div><div class="cd-big" id="cdBig"></div>
       <div class="hero-grid" style="margin-top:10px">
@@ -246,6 +249,9 @@
       ${LUTON_OPTIONS.map((o) => `<tr><td>${rich(o.name)}</td><td data-h="⏱">${rich(o.time)}</td><td>${rich(o.note)}</td></tr>`).join("")}</table>
       <p class="small">${rich(LUTON_SOURCES)}</p>
       <h3>Прилёт Вт 17.11 (18:45)</h3><p>${rich(LUTON_ARRIVAL)}</p>
+      ${typeof HOME_TRANSFERS !== "undefined" ? `<h3>🏠 Luton ↔ Наш дом (SW7), на двоих</h3><p class="small"><b>Прилёт Вт 17.11</b></p><table class="stack-table"><thead><tr><th>Вариант</th><th>Время</th><th>Цена</th></tr></thead>${HOME_TRANSFERS.arrival.map((r) => `<tr><td>${rich(r[0])}</td><td data-h="⏱">${rich(r[1])}</td><td>${rich(r[2])}</td></tr>`).join("")}</table>
+      <p class="small"><b>Вылет Сб 21.11 (07:25, сдача багажа 04:25–06:25)</b></p><table class="stack-table"><thead><tr><th>Вариант</th><th>Время</th><th>Цена</th></tr></thead>${HOME_TRANSFERS.departure.map((r) => `<tr><td>${rich(r[0])}</td><td data-h="⏱">${rich(r[1])}</td><td>${rich(r[2])}</td></tr>`).join("")}</table>
+      <p class="small">Источники: ${rich(HOME_TRANSFERS.sources)}</p>${HOME ? navBtns(HOME) : ""}` : ""}
       <h3>Вылет Сб 21.11 (07:25) — что реально успевает</h3><ul>${LUTON_DEPARTURE.options.map((o) => `<li>${rich(o)}</li>`).join("")}</ul>
       ${navBtns(lu)}</div>`;
 
@@ -368,7 +374,7 @@
     let h = `<article class="hotel"><div class="ph" data-photo="${esc(safeUrl(x.photo) || (x.photo && !/^\w+:/.test(x.photo) ? x.photo : ""))}">
       ${x.tier ? `<span class="tier">${esc(x.tier)}${x.lastNight ? " · " + t("lastNightTag") : ""}</span>` : x.lastNight ? `<span class="tier">${t("lastNightTag")}</span>` : ""}
       ${x.totalGBP != null ? `<span class="price">£${esc(x.totalGBP)}<small>${t("total")} · ${esc(x.nights || "?")} ${t("nights")}${per ? ` · £${per}${t("perNight")}` : ""}</small></span>` : ""}</div>
-      <div class="hb"><h3>${esc(x.name)}</h3><div class="small">${esc(x.area || "")}${x.rating != null ? ` · ★ ${esc(x.rating)}` : ""}${x.reviews != null ? ` (${esc(x.reviews)} ${t("reviews")})` : ""}</div>
+      <div class="hb">${x.chosen ? `<div class="good" style="margin:0 0 6px">✅ <b>Наш дом</b> — выбрано</div>` : ""}<h3>${esc(x.name)}</h3><div class="small">${esc(x.area || "")}${x.rating != null ? ` · ★ ${esc(x.rating)}` : ""}${x.reviews != null ? ` (${esc(x.reviews)} ${t("reviews")})` : ""}</div>
       <div class="smoke ${bal}">${bal === "yes" ? "✅ " + t("balconyYes") : bal === "no" ? "❌ " + t("balconyNo") : "❓ балкон — ?"}<br>🚬 ${t("smokingRule")}: ${esc(x.smokingRule || "?")}</div>
       <div class="facts">${fact("room", x.room)}${fact("breakfast", x.breakfast)}${fact("cancel", x.cancellation)}${fact("tube", x.tube)}</div>`;
     if ((x.pros && x.pros.length) || (x.cons && x.cons.length))
@@ -389,7 +395,7 @@
   }
   function renderStay() {
     const chip = (attr, val, label, on) => `<button class="chip" type="button" ${attr}="${val}" aria-pressed="${on}">${label}</button>`;
-    let h = `<div class="card"><h2>🏨 Жильё</h2><div class="tbd"><b>TBD — не забронировано.</b><br>${STAY_ADVICE.slots.map(esc).join("<br>")}</div>
+    let h = `<div class="card"><h2>🏨 Жильё</h2><div class="${HOTELS.some((x) => x.chosen) ? "good" : "tbd"}"><b>${HOTELS.some((x) => x.chosen) ? "🏠 Наш дом выбран." : "TBD — не забронировано."}</b><br>${STAY_ADVICE.slots.map(esc).join("<br>")}</div>
       <p class="small">${t("stayCrit")} <a href="#more/s-smoking" data-goto="more/s-smoking">🚬 ${t("smoking")}</a></p>
       <div class="toolbar chips">${chip("data-grp", "all", "Все", true)}${chip("data-grp", "main", t("main3"), false)}${chip("data-grp", "last", t("lastNight"), false)}</div>
       <div class="toolbar chips">${chip("data-bal", "1", t("onlyBalcony"), false)}${chip("data-sort", "price", t("sortPrice"), true)}${chip("data-sort", "rating", t("sortRating"), false)}</div>
@@ -528,7 +534,7 @@
   const filt = { day: "all", cats: new Set(Object.keys(CATEGORIES)) };
   const isFar = (p) => p.far || Math.hypot((p.lat - 51.51) * 111, (p.lng + 0.12) * 69) > 15;
   function allPoints() {
-    const hs = HOTELS.map((x, i) => (typeof x.lat === "number" && typeof x.lng === "number" ? hotelPlace("hotel-" + i) : null)).filter(Boolean);
+    const hs = HOTELS.map((x, i) => (!x.chosen && typeof x.lat === "number" && typeof x.lng === "number" ? hotelPlace("hotel-" + i) : null)).filter(Boolean);
     return PLACES.concat(hs);
   }
   function icon(cat) {

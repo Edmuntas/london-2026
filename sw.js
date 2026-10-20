@@ -1,6 +1,6 @@
 /* Service worker: app shell (cache-first, refreshed in background) + visited OSM tiles & hotel photos (runtime cache, capped). */
 /* После правки файлов поменяйте VERSION — тогда кэш оболочки обновится у всех сразу. */
-const VERSION = "ldn26-v5";
+const VERSION = "ldn26-v6";
 const SHELL = VERSION + "-shell";
 const TILES = "ldn26-tiles";
 const IMGS = "ldn26-img";
@@ -11,7 +11,7 @@ const SHELL_FILES = [
   "assets/leaflet/leaflet.js", "assets/leaflet/leaflet.css",
   "assets/leaflet/images/marker-icon.png", "assets/leaflet/images/marker-icon-2x.png", "assets/leaflet/images/marker-shadow.png",
   "assets/leaflet/images/layers.png", "assets/leaflet/images/layers-2x.png",
-  "assets/icons/icon.svg", "assets/icons/icon-192.png", "assets/icons/icon-512.png", "manifest.webmanifest"
+  "assets/icons/icon.svg", "assets/icons/icon-192.png", "assets/icons/icon-512.png", "manifest.webmanifest", "assets/img/home-roland32.jpg"
 ];
 
 self.addEventListener("install", (e) => {
