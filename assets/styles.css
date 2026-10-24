@@ -229,3 +229,17 @@ th{color:var(--muted);font-weight:600;font-size:11.5px;text-transform:uppercase;
 .areas-list{list-style:none;padding:0;margin:0 0 6px}
 .areas-list li{display:flex;gap:8px;align-items:flex-start;margin:4px 0}
 .areas-list .sw{margin-top:5px}
+
+/* ---------- language switcher + Hebrew / RTL ---------- */
+.langsw{display:inline-flex;margin-top:5px;border:1px solid rgba(255,255,255,.45);border-radius:99px;overflow:hidden;direction:ltr}
+.langsw button{border:0;background:transparent;color:#fff;font:700 12px/1 inherit;padding:4px 10px;min-height:24px;cursor:pointer;opacity:.8}
+.langsw button[aria-pressed=true]{background:#fff;color:var(--accent-d);opacity:1}
+html[lang=he] body,html[lang=he] .xm,html[lang=he] button,html[lang=he] input{font-family:"Heebo","Assistant",-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,"Noto Sans Hebrew",sans-serif}
+html[lang=he]{--xf:"Heebo","Assistant",-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+html[lang=he] .xm-pop{font-family:var(--xf)}
+/* map stays LTR (tiles, controls); popup/legend text itself reads RTL */
+.leaflet-container{direction:ltr}
+[dir=rtl] .leaflet-popup-content,[dir=rtl] .areas-legend,[dir=rtl] .leaflet-tooltip{direction:rtl;text-align:right}
+[dir=rtl] .clock .t,[dir=rtl] .cd-v{direction:ltr;unicode-bidi:isolate}
+[dir=rtl] .ti .when{unicode-bidi:plaintext}
+[dir=rtl] .locate{inset-inline-end:auto;right:10px}

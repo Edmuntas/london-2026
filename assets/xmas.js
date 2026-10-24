@@ -13,10 +13,11 @@
     trail: '<path d="M12 2.5l5 6.5h-3l4 5.5h-4l3 5H7l3-5H6l4-5.5H7z"/><path d="M12 19.5v2"/>',
     windows: '<rect x="3.5" y="8" width="17" height="4" rx="1"/><path d="M5.5 12v8.5h13V12M12 8v12.5"/><path d="M12 8C10.5 4.5 7 4.3 7 6.4 7 8 12 8 12 8zM12 8c1.5-3.5 5-3.7 5-1.6C17 8 12 8 12 8z"/>'
   };
+  var I = window.I18N || { t: function (k) { return k; } }, T = function (k, v) { return I.t(k, v); };
   var STATUS = {
-    open:   { label: 'Открыто в наши даты', short: 'Открыто', color: '#1d8f55' },
-    check:  { label: 'Уточнить [[проверить]]', short: 'Проверить', color: '#d99a06' },
-    closed: { label: 'Ещё закрыто / нет в наши даты', short: 'Закрыто', color: '#8b919c' }
+    open:   { label: T('xStOpen'), short: T('xStOpenS'), color: '#1d8f55' },
+    check:  { label: T('xStCheck'), short: T('xStCheckS'), color: '#d99a06' },
+    closed: { label: T('xStClosed'), short: T('xStClosedS'), color: '#8b919c' }
   };
 
   var state = { day: 'all', types: Object.keys(TYPES).reduce(function (o, k) { o[k] = true; return o; }, {}), walk: false };
@@ -33,9 +34,9 @@
     return p.check ? 'check' : 'open';
   }
   function hoursFor(p, day) {
-    if (day === 'all') return DAYS.map(function (d) { return d.label + ': ' + (p.days[d.key] || 'закрыто'); }).join(' · ');
+    if (day === 'all') return DAYS.map(function (d) { return d.label + ': ' + (p.days[d.key] || T('xClosed')); }).join(' · ');
     var lbl = (DAYS.filter(function (d) { return d.key === day; })[0] || {}).label;
-    return lbl + ': ' + (p.days[day] || 'закрыто');
+    return lbl + ': ' + (p.days[day] || T('xClosed'));
   }
   function routeUrl(p) { return 'https://www.google.com/maps/dir/?api=1&destination=' + p.lat + ',' + p.lng + '&travelmode=transit'; }
 
@@ -52,11 +53,11 @@
       '<div class="xm-pop-type" style="color:' + TYPES[p.type].color + '">' + svg(p.type, 14) + ' ' + esc(TYPES[p.type].label) + '</div>' +
       '<div class="xm-pop-name">' + esc(p.name) + '</div>' +
       '<span class="xm-badge xm-' + st + '">' + STATUS[st].short + '</span>' +
-      '<dl><dt>Когда</dt><dd>' + mark(hoursFor(p, day)) + '</dd>' +
-      '<dt>Вход</dt><dd>' + mark(p.price) + '</dd>' +
-      '<dt>Метро</dt><dd>' + esc(p.tube) + '</dd></dl>' +
-      '<div class="xm-btns"><a class="xm-btn xm-btn-main" target="_blank" rel="noopener" href="' + routeUrl(p) + '">Маршрут</a>' +
-      '<a class="xm-btn" target="_blank" rel="noopener" href="' + esc(p.url) + '">Сайт</a></div></div>';
+      '<dl><dt>' + T('xWhen') + '</dt><dd>' + mark(hoursFor(p, day)) + '</dd>' +
+      '<dt>' + T('xEntry') + '</dt><dd>' + mark(p.price) + '</dd>' +
+      '<dt>' + T('xTube') + '</dt><dd>' + esc(p.tube) + '</dd></dl>' +
+      '<div class="xm-btns"><a class="xm-btn xm-btn-main" target="_blank" rel="noopener" href="' + routeUrl(p) + '">' + T('xRoute') + '</a>' +
+      '<a class="xm-btn" target="_blank" rel="noopener" href="' + esc(p.url) + '">' + T('xSite') + '</a></div></div>';
   }
   function cardHtml(p, day) {
     var st = statusFor(p, day), t = TYPES[p.type];
@@ -66,18 +67,18 @@
       '<span class="xm-badge xm-' + st + '">' + STATUS[st].short + '</span></header>' +
       '<p class="xm-what">' + esc(p.what) + '</p>' +
       '<ul class="xm-facts">' +
-      '<li><b>Даты</b>' + mark(p.dates) + '</li>' +
-      '<li><b>Часы</b>' + mark(p.hours) + '</li>' +
+      '<li><b>' + T('xDates') + '</b>' + mark(p.dates) + '</li>' +
+      '<li><b>' + T('xHours') + '</b>' + mark(p.hours) + '</li>' +
       '<li><b>18–20.11</b>' + mark(hoursFor(p, 'all')) + '</li>' +
-      '<li><b>Вход</b>' + mark(p.price) + '</li>' +
-      '<li><b>Бронь</b>' + mark(p.booking) + '</li>' +
-      '<li><b>Адрес</b>' + esc(p.address) + '</li>' +
-      '<li><b>Метро</b>' + esc(p.tube) + '</li></ul>' +
+      '<li><b>' + T('xEntry') + '</b>' + mark(p.price) + '</li>' +
+      '<li><b>' + T('xBooking') + '</b>' + mark(p.booking) + '</li>' +
+      '<li><b>' + T('xAddr') + '</b><bdi>' + esc(p.address) + '</bdi></li>' +
+      '<li><b>' + T('xTube') + '</b>' + esc(p.tube) + '</li></ul>' +
       '<p class="xm-tip">' + mark(p.tip) + '</p>' +
       (p.note ? '<p class="xm-note">' + mark(p.note) + '</p>' : '') +
-      '<div class="xm-btns"><a class="xm-btn xm-btn-main" target="_blank" rel="noopener" href="' + routeUrl(p) + '">Маршрут</a>' +
-      '<a class="xm-btn" target="_blank" rel="noopener" href="' + esc(p.url) + '">Сайт</a>' +
-      '<button class="xm-btn xm-btn-ghost" data-show="' + p.id + '" type="button">На карте</button></div></article>';
+      '<div class="xm-btns"><a class="xm-btn xm-btn-main" target="_blank" rel="noopener" href="' + routeUrl(p) + '">' + T('xRoute') + '</a>' +
+      '<a class="xm-btn" target="_blank" rel="noopener" href="' + esc(p.url) + '">' + T('xSite') + '</a>' +
+      '<button class="xm-btn xm-btn-ghost" data-show="' + p.id + '" type="button">' + T('xOnMap') + '</button></div></article>';
   }
 
   function walkStats() {
@@ -96,21 +97,21 @@
     root.classList.add('xm');
     root.innerHTML =
       '<div class="xm-hero"><div class="xm-snow" aria-hidden="true"></div>' +
-      '<h2>Рождественские ярмарки</h2><p>Ярмарки, огни, катки и световые тропы Лондона — что работает 18–20 ноября 2026</p></div>' +
+      '<h2>' + T('xHeroH') + '</h2><p>' + T('xHeroP') + '</p></div>' +
       '<div class="xm-controls">' +
-      '<div class="xm-seg" role="tablist" aria-label="День">' +
-      '<button type="button" data-day="all" class="on">Все дни</button>' +
+      '<div class="xm-seg" role="tablist" aria-label="' + T('xDay') + '">' +
+      '<button type="button" data-day="all" class="on">' + T('xAllDays') + '</button>' +
       DAYS.map(function (d) { return '<button type="button" data-day="' + d.key + '">' + d.label + '</button>'; }).join('') + '</div>' +
       '<div class="xm-chips">' + Object.keys(TYPES).map(function (k) {
         return '<button type="button" class="xm-chip on" data-type="' + k + '" style="--ty:' + TYPES[k].color + '">' + svg(k, 15) + '<span>' + TYPES[k].label + '</span></button>';
       }).join('') + '</div></div>' +
       '<div class="xm-layout"><div class="xm-mapcol"><div class="xm-map" id="xm-map"></div>' +
-      '<div class="xm-legend">' + ['open', 'check', 'closed'].map(function (s) { return '<span><i style="background:' + STATUS[s].color + '"></i>' + STATUS[s].label.replace(/\[\[.*\]\]/, '') + '</span>'; }).join('') + '</div>' +
-      '<div class="xm-walk"><button type="button" class="xm-walk-btn" aria-pressed="false">' + svg('lights', 16) + '<span>Показать прогулку по огням</span></button>' +
-      '<div class="xm-walk-info"><b>' + esc(WALK.name) + '</b> · ~' + ws.km.toFixed(1).replace('.', ',') + ' км, ~' + ws.min + ' мин чистой ходьбы, 2–2,5 ч с остановками. Старт ' + esc(WALK.start) + '.' +
+      '<div class="xm-legend">' + ['open', 'check', 'closed'].map(function (s) { return '<span><i style="background:' + STATUS[s].color + '"></i>' + STATUS[s].label + '</span>'; }).join('') + '</div>' +
+      '<div class="xm-walk"><button type="button" class="xm-walk-btn" aria-pressed="false">' + svg('lights', 16) + '<span>' + T('xWalkShow') + '</span></button>' +
+      '<div class="xm-walk-info"><b>' + esc(WALK.name) + '</b> · ~' + (I.lang === 'he' ? ws.km.toFixed(1) : ws.km.toFixed(1).replace('.', ',')) + ' ' + T('xKm') + ', ~' + ws.min + ' ' + T('xWalkMin') + ' ' + esc(WALK.start) + '.' +
       '<ol>' + WALK.stops.map(function (s) { return '<li>' + esc(s.name) + '</li>'; }).join('') + '</ol></div></div></div>' +
       '<div class="xm-listcol"><div class="xm-count"></div><div class="xm-list"></div></div></div>' +
-      '<p class="xm-foot">Данные сверены с официальными сайтами 17.10.2026. <span class="xm-flag">проверить</span> — даты/часы 2026 ещё не опубликованы.</p>';
+      '<p class="xm-foot">' + T('xFoot', { check: '<span class="xm-flag">' + T('checkWord') + '</span>' }) + '</p>';
 
     var map = L.map(root.querySelector('#xm-map'), { zoomControl: true, scrollWheelZoom: false }).setView([51.509, -0.128], 13);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -131,9 +132,9 @@
       var list = root.querySelector('.xm-list'), shown = PLACES.filter(visible);
       var order = { open: 0, check: 1, closed: 2 };
       shown.sort(function (a, b) { return order[statusFor(a, state.day)] - order[statusFor(b, state.day)]; });
-      list.innerHTML = shown.map(function (p) { return cardHtml(p, state.day); }).join('') || '<p class="xm-empty">Ничего не выбрано</p>';
+      list.innerHTML = shown.map(function (p) { return cardHtml(p, state.day); }).join('') || '<p class="xm-empty">' + T('xNone') + '</p>';
       var nOpen = shown.filter(function (p) { return statusFor(p, state.day) === 'open'; }).length;
-      root.querySelector('.xm-count').textContent = 'Мест: ' + shown.length + ' · открыто: ' + nOpen;
+      root.querySelector('.xm-count').textContent = T('xCount', { n: shown.length, o: nOpen });
       PLACES.forEach(function (p) {
         var m = markers[p.id], st = statusFor(p, state.day);
         if (!m) { m = markers[p.id] = L.marker([p.lat, p.lng], { title: p.name, riseOnHover: true }); m.bindPopup('', { maxWidth: 280, autoPanPadding: [20, 70] }); }
@@ -159,7 +160,7 @@
       else if (b.dataset.show) { show(b.dataset.show); }
       else if (b.classList.contains('xm-walk-btn')) {
         state.walk = !state.walk; b.setAttribute('aria-pressed', state.walk);
-        b.querySelector('span').textContent = state.walk ? 'Скрыть прогулку' : 'Показать прогулку по огням';
+        b.querySelector('span').textContent = state.walk ? T('xWalkHide') : T('xWalkShow');
         root.querySelector('.xm-walk').classList.toggle('on', state.walk);
         if (state.walk) { walkLayer.addTo(map); map.flyToBounds(L.latLngBounds(WALK.path).pad(0.15), { duration: .6 }); } else map.removeLayer(walkLayer);
       }

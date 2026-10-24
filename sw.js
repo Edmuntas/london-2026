@@ -1,13 +1,13 @@
 /* Service worker: app shell (cache-first, refreshed in background) + visited OSM tiles & hotel photos (runtime cache, capped). */
 /* После правки файлов поменяйте VERSION — тогда кэш оболочки обновится у всех сразу. */
-const VERSION = "ldn26-v6";
+const VERSION = "ldn26-v7";
 const SHELL = VERSION + "-shell";
 const TILES = "ldn26-tiles";
 const IMGS = "ldn26-img";
 const MAX_TILES = 1500;
 const MAX_IMGS = 80;
 const SHELL_FILES = [
-  "./", "index.html", "data.js", "xmas-data.js", "assets/app.js", "assets/styles.css", "assets/xmas.js", "assets/xmas.css",
+  "./", "index.html", "i18n.js", "data.js", "xmas-data.js", "data.he.js", "xmas-data.he.js", "assets/app.js", "assets/styles.css", "assets/xmas.js", "assets/xmas.css",
   "assets/leaflet/leaflet.js", "assets/leaflet/leaflet.css",
   "assets/leaflet/images/marker-icon.png", "assets/leaflet/images/marker-icon-2x.png", "assets/leaflet/images/marker-shadow.png",
   "assets/leaflet/images/layers.png", "assets/leaflet/images/layers-2x.png",

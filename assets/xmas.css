@@ -29,19 +29,19 @@
 .xm-layout{display:flex;flex-direction:column;gap:12px;padding:12px 0}
 .xm-map{position:relative;z-index:0;isolation:isolate;height:52vh;min-height:320px;max-height:560px;border-radius:16px;overflow:hidden;box-shadow:0 4px 18px rgba(20,33,61,.12);border:1px solid var(--line);background:#e9e4da}
 .xm-legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--muted);padding:8px 2px 0}
-.xm-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.xm-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-inline-end:5px;vertical-align:-1px}
 .xm-walk{margin-top:10px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px}
 .xm-walk-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;border-radius:10px;padding:11px;
   background:linear-gradient(135deg,var(--red),#9d0c24);color:#fff;font:700 14.5px/1 var(--xf);cursor:pointer;min-height:44px}
 .xm-walk-btn[aria-pressed=true]{background:linear-gradient(135deg,#b8890f,var(--gold))}
 .xm-walk-info{display:none;font-size:13.5px;line-height:1.45;color:var(--ink);padding:10px 2px 0}
 .xm-walk.on .xm-walk-info{display:block}
-.xm-walk-info ol{margin:6px 0 0;padding-left:20px;color:var(--muted)}
+.xm-walk-info ol{margin:6px 0 0;padding-inline-start:20px;color:var(--muted)}
 .xm-count{font-size:13px;color:var(--muted);margin:2px 2px 8px}
 .xm-list{display:grid;gap:10px}
-.xm-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 1px 2px rgba(20,33,61,.05);cursor:pointer;transition:box-shadow .15s,transform .15s;border-left:4px solid var(--green)}
+.xm-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 1px 2px rgba(20,33,61,.05);cursor:pointer;transition:box-shadow .15s,transform .15s;border-inline-start:4px solid var(--green)}
 .xm-card:hover,.xm-card:focus{box-shadow:0 6px 18px rgba(20,33,61,.12);outline:none}
-.xm-c-check{border-left-color:#d99a06}.xm-c-closed{border-left-color:#c3c7ce;background:#fdfcfa}
+.xm-c-check{border-inline-start-color:#d99a06}.xm-c-closed{border-inline-start-color:#c3c7ce;background:#fdfcfa}
 .xm-c-closed h3{color:#59606c}
 .xm-card header{display:flex;align-items:flex-start;gap:10px}
 .xm-card-ico{flex:0 0 30px;height:30px;border-radius:9px;display:grid;place-items:center;color:#fff}

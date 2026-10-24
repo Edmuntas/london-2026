@@ -16,6 +16,11 @@
 <link rel="stylesheet" href="assets/leaflet/leaflet.css">
 <link rel="stylesheet" href="assets/styles.css">
 <link rel="stylesheet" href="assets/xmas.css">
+<script src="i18n.js"></script>
+<script>
+  /* Иврит: шрифт Heebo (Google Fonts) */
+  if (window.I18N && I18N.lang === "he") document.write('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap">');
+</script>
 </head>
 <body>
 <div class="app" id="app">
@@ -49,20 +54,22 @@
       <div class="chips" id="catFilter"></div>
     </div>
     <div id="map"></div>
-    <button class="locate" id="locate" type="button" aria-label="Где я"><span>◎</span></button>
+    <button class="locate" id="locate" type="button" aria-label="Где я" data-i18n-aria="locate"><span>◎</span></button>
   </section>
 </div>
 
 <div class="sheet-backdrop" id="sheetBackdrop" hidden></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" hidden>
-  <button class="sheet-close" id="sheetClose" type="button" aria-label="Закрыть">✕</button>
+  <button class="sheet-close" id="sheetClose" type="button" aria-label="Закрыть" data-i18n-aria="close">✕</button>
   <div class="sheet-body" id="sheetBody"></div>
 </div>
 <div class="toast" id="toast" hidden></div>
 
 <script src="assets/leaflet/leaflet.js"></script>
-<script src="data.js"></script>
-<script src="xmas-data.js"></script>
+<script>
+  /* Контент: data.js / xmas-data.js (русский) или data.he.js / xmas-data.he.js (иврит) */
+  (function () { var he = window.I18N && I18N.lang === "he"; document.write('<script src="data' + (he ? '.he' : '') + '.js"><\/script><script src="xmas-data' + (he ? '.he' : '') + '.js"><\/script>'); })();
+</script>
 <script src="assets/xmas.js"></script>
 <script src="assets/app.js"></script>
 </body>
